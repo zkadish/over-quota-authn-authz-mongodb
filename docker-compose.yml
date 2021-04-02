@@ -1,28 +1,57 @@
-version: "3.2"
+version: "3.9"
 services:
- # setup the MongoDB database
-  mongo-database:
-   # pulls the latest, stable image
-    # image: mongo:4.4.2 # TODO: pin version to 4.4.2
+  mongodb-auth:
     build:
-       context: .
-       dockerfile: Dockerfile
-    container_name: "mongobd-dev"
-    restart: always
-
-    # configure the Docker entrypoint for MongoDB
+      context: .
+      dockerfile: Dockerfile_mongo
+    command: [--config, /etc/mongod.conf]
+    networks:
+      - skillup-network
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=1234
-
-    # bind mount volume for MongoDB documents
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=authServiceDev
     volumes:
       - $PWD/mongo-data:/data/db
-      # - $PWD/build:/build
+      - $PWD/mongo-scripts/init-mongodb.js:/docker-entrypoint-initdb.d/init-mongodb.js:ro
+    ports:
+      - "${MONGO_PORT}:${MONGO_PORT}"
+    # healthcheck:
+    #   test: echo 'db.runCommand("ping").ok' | mongo 127.0.0.1:27017/test --quiet
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    restart: unless-stopped
 
-    # ports:
-      # - "27017:27017" # server db connection
-      # - "28017:28017" # html connection
+  mongo-express-auth:
+    build:
+      context: .
+      dockerfile: Dockerfile_mongo-express
+    networks:
+      - skillup-network
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb-auth
+      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ROOT_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
+    volumes:
+      - $PWD/mongo-data
+    depends_on:
+      - mongodb-auth
+    ports:
+      - 8000:8081
+    # healthcheck:
+    #   test:  wget --quiet --tries=3 --spider http://admin:admin123@0.0.0.0:8081 || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    restart: unless-stopped
+  
+volumes:
+  mongo-data:
 
-    # command: sh ./build/start-mongo.sh
-    # command: pwd
+networks:
+  skillup-network:

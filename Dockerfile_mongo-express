@@ -1,0 +1,7 @@
+FROM mongo-express:0.54.0
+
+# RUN apk update
+# RUN apk add vim
+# RUN apk add nano
+
+EXPOSE 8081
