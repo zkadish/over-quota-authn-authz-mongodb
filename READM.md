@@ -45,7 +45,7 @@
 - docker exec -it skillup-app-mongodb_mongodb_1 bash
 
 - open mongo-express in the browser
-- http://localhost:8081/
+- http://localhost:8000/
 
 ### Development Notes
 
