@@ -3,10 +3,11 @@ services:
   mongodb-auth:
     build:
       context: .
-      dockerfile: Dockerfile_mongo
+      dockerfile: Dockerfile.mongo
     command: [--config, /etc/mongod.conf]
-    networks:
-      - skillup-network
+    # command: mongo --config /etc/mongod.conf
+    # networks:
+    #   - skillup-network
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
@@ -26,9 +27,9 @@ services:
   mongo-express-auth:
     build:
       context: .
-      dockerfile: Dockerfile_mongo-express
-    networks:
-      - skillup-network
+      dockerfile: Dockerfile.mongo-express
+    # networks:
+    #   - skillup-network
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongodb-auth
       - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
@@ -54,4 +55,6 @@ volumes:
   mongo-data:
 
 networks:
-  skillup-network:
+  default:
+    external:
+      name: skillup-network

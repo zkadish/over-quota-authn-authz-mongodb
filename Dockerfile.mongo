@@ -3,9 +3,9 @@ FROM mongo:4.4.4
 COPY ./mongod.conf /etc/
 # COPY ./mongo-scripts/init-mongodb.sh /docker-entrypoint-initdb.d/
 
-# RUN apt-get update
-# RUN apt-get install vim -y
-# RUN apt-get install nano -y
+RUN apt-get update
+RUN apt-get install vim -y
+RUN apt-get install nano -y
 
 RUN mkdir -pv ./data/db
 
