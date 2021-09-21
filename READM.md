@@ -6,6 +6,7 @@
 
 - Create the docker network
 - $ docker network create --driver bridge skillup-network
+- $ docker network create --driver overlay skillup-network
   
 - See if docker network has already been created
 - $ docker network ls
@@ -39,7 +40,7 @@
 ### Build image and run docker container with docker-compose
 
 - Build and run mongo and mongo-express
-- $ docker-compose up --build --force-recreate --remove-orphans
+- $ docker compose up --build --force-recreate --remove-orphans
 
 - Connect to the mongo db with a terminal
 - docker exec -it skillup-app-mongodb_mongodb_1 bash
