@@ -1,11 +1,26 @@
 FROM mongo:4.4.4
 
-COPY ./mongod.conf /etc/
-# COPY ./mongo-scripts/init-mongodb.sh /docker-entrypoint-initdb.d/
+COPY config/mongodb/mongod.conf /etc/
+COPY config/mongodb/mongod.local.conf /etc/
+# COPY config/mongodb/renew-mongo-cert.sh ./
+# RUN chmod +x /renew-mongo-cert.sh
+
+# COPY config/nginx/default.conf /etc/nginx/conf.d/
+# COPY config/nginx/startup-script.sh ./
+# COPY config/nginx/nginx.list /etx/apt/sources.list.d/
 
 RUN apt-get update
 RUN apt-get install vim -y
 RUN apt-get install nano -y
+# RUN apt-get install wget -y
+
+# RUN wget http://nginx.org/keys/nginx_signing.key
+# RUN apt-key add nginx_signing.key
+# RUN apt-get update
+
+# RUN apt-get install nginx -y
+# RUN apt-get install certbot -y
+# RUN apt-get install python3-certbot-nginx -y
 
 RUN mkdir -pv ./data/db
 

@@ -1,3 +1,12 @@
 mongo-data/
 
-.env
+deploy/
+
+certbot/
+
+.env*
+
+# secrets
+PASSWORDS.md
+init-mongodb-dev.js
+init-mongodb-local.js
