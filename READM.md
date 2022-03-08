@@ -40,7 +40,8 @@
 ### Build image and run docker container with docker-compose
 
 - Build and run mongo and mongo-express
-- $ docker compose up --build --force-recreate --remove-orphans
+- LOCAL: $ docker-compose --env-file ./.env.local up --build --force-recreate --remove-orphans
+- DEV: $ docker-compose --env-file ./.env.dev up --build --force-recreate --remove-orphans -d
 
 - Connect to the mongo db with a terminal
 - docker exec -it skillup-app-mongodb_mongodb_1 bash

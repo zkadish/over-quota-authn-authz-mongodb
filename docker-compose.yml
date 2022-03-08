@@ -1,11 +1,31 @@
 version: "3.9"
 services:
+  # web: 
+  #   image: nginx:latest
+  #   restart: always
+  #   volumes:
+  #       - ./public:/var/docker/public
+  #       - ./config/nginx/conf.d:/etc/nginx/conf.d
+  #       - ./certbot/conf:/etc/nginx/ssl
+  #       - ./certbot/data:/var/www/certbot
+  #   ports:
+  #       - 80:80
+  #       - 443:443
+
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   command: certonly --webroot --webroot-path=/var/www/certbot --email zachkadish@gmail.com --agree-tos --no-eff-email -d dev.auth.mongo.overquota.io -d www.dev.auth.mongo.overquota.io
+  #   volumes:
+  #       - ./certbot/conf:/etc/letsencrypt
+  #       - ./certbot/logs:/var/log/letsencrypt
+  #       - ./certbot/data:/var/www/certbot
+
   mongodb-auth:
     build:
       context: .
       dockerfile: Dockerfile.mongo
-    command: [--config, /etc/mongod.conf]
-    # command: mongo --config /etc/mongod.conf
+    command: [--config, '/etc/${MONGO_CONFIG}']
+    # command: mongo --config /etc/${MONGO_CONFIG}
     networks:
       - skillup-network
     # networks:
@@ -13,12 +33,13 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=authServiceDev
+      - MONGO_INITDB_DATABASE=${INIT_MONGO_DB}
     volumes:
-      - $PWD/mongo-data:/data/db
-      - $PWD/mongo-scripts/init-mongodb.js:/docker-entrypoint-initdb.d/init-mongodb.js:ro
+      - ${ROOT_PATH}/mongo-data:/data/db
+      - ${ROOT_PATH}/mongo-scripts/${INIT_MONGO_JS}:/docker-entrypoint-initdb.d/${INIT_MONGO_JS}:ro
     ports:
-      - "${MONGO_PORT}:${MONGO_PORT}"
+      - 56702:56702
+      # - 80:80 # open port 80 for nginx
     # healthcheck:
     #   test: echo 'db.runCommand("ping").ok' | mongo 127.0.0.1:27017/test --quiet
     #   interval: 30s
@@ -43,7 +64,7 @@ services:
       - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
       - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
     volumes:
-      - $PWD/mongo-data
+      - ${ROOT_PATH}/mongo-data
     depends_on:
       - mongodb-auth
     ports:
