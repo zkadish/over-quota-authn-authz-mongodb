@@ -35,8 +35,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       - MONGO_INITDB_DATABASE=${INIT_MONGO_DB}
     volumes:
-      - ${ROOT_PATH}/mongo-data:/data/db
-      - ${ROOT_PATH}/mongo-scripts/${INIT_MONGO_JS}:/docker-entrypoint-initdb.d/${INIT_MONGO_JS}:ro
+      - $PWD/mongo-data:/data/db
+      - $PWD/mongo-scripts/${INIT_MONGO_JS}:/docker-entrypoint-initdb.d/${INIT_MONGO_JS}:ro
     ports:
       - 56702:56702
       # - 80:80 # open port 80 for nginx
@@ -64,7 +64,7 @@ services:
       - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
       - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
     volumes:
-      - ${ROOT_PATH}/mongo-data
+      - $PWD/mongo-data
     depends_on:
       - mongodb-auth
     ports:
