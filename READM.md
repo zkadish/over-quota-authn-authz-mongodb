@@ -53,6 +53,18 @@
 
 - If Mongo won't start try deleting all files in /mongodb/mongo-data/ and restarting mongo server
 
+### Running and initializing installed mongodb@4.4.0 without running docker compose
+
+- When restarting clear mongo data in `$ rm -rf /var/lib/mongodb/*`
+  
+- Run mongo with `authorization: disabled` in the `$ sudo vim /etc/mongo.conf` or comment out the authorization line in mongo.conf
+
+- Open the REPL `$ mongo` and run the init-mongodb-{ENV}.js script `> load('./init-mongodb-{ENV}.js')`
+
+- Enable authorization in `/etc/mongo.conf`
+
+- Restart mongo `$ sudo systemctl restart mongod`
+
 ### TODOs
 
 - remove intermediate images after build...
