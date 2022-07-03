@@ -1,4 +1,5 @@
-FROM mongo:4.4.4
+# FROM mongo:4.4.4
+FROM mongo:5.0.8
 
 COPY config/mongodb/mongod.conf /etc/
 COPY config/mongodb/mongod.local.conf /etc/

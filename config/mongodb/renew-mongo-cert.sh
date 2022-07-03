@@ -9,11 +9,13 @@ certbot renew
 # combine latest letsencrypt files for mongo
 
 # find latest fullchain*.pem
-newestFull=$(ls -v /etc/letsencrypt/archive/dev.auth.mongo.overquota.io/fullchain*.pem | tail -n 1)
+# newestFull=$(ls -v /etc/letsencrypt/archive/dev.auth.mongo.overquota.io/fullchain*.pem | tail -n 1)
+newestFull=$(ls -v /etc/letsencrypt/archive/dev.auth.mongo.viewportmedia.org/fullchain*.pem | tail -n 1)
 echo "$newestFull"
 
 # find latest privkey*.pem
-newestPriv=$(ls -v /etc/letsencrypt/archive/dev.auth.mongo.overquota.io/privkey*.pem | tail -n 1)
+# newestPriv=$(ls -v /etc/letsencrypt/archive/dev.auth.mongo.overquota.io/privkey*.pem | tail -n 1)
+newestPriv=$(ls -v /etc/letsencrypt/archive/dev.auth.mongo.viewportmedia.org/privkey*.pem | tail -n 1)
 echo "$newestPriv"
 
 # combine to mongo.pem
