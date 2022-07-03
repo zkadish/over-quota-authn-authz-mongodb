@@ -33,3 +33,9 @@ Add to the steps taken
 - install MongoDB <https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-20-04> & <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/#uninstall-mongodb-community-edition>
 
 - initialize MongoDB <https://michelebusta.com/the-little-things-5-initialize-a-local-mongo-db-8972d71b7715>
+
+## Server Setup for direct install without docker
+
+- /etc/mongod.conf
+
+- dbPath: /var/lib/mongodb
